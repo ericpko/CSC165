@@ -1,0 +1,211 @@
+% === CSC165 Winter 2018 ===
+% __authors__ = 'Jacob Chmura, Conor Vedova, Eric Koehli'
+% === Problem Set 2 ===
+
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, amssymb}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{csc}
+
+\newcommand{\qed}{\tag*{$\blacksquare$}}
+
+% Document metadata
+\title{CSC165H1 Winter 2018: Problem Set 2}
+\author{By: Jacob Chmura, Conor Vedova, Eric Koehli}
+\date{February 7, 2018}
+
+
+% Document starts here
+\begin{document}
+\maketitle
+\newpage
+
+\section{AND vs. IMPLIES}
+\begin{enumerate}
+\item[(a)] We are going to prove the statement: $\forall n \IN \N, n > 15 \IMP n^3 - 10n^2 + 3 \geqslant 165$. In this proof, we use the known fact about inequalities such that if $a > b > 0$ and $c > d > 0$, then $ac > bd > 0$.
+
+\emph{Proof.} Let $n \IN \N$. Assume $n > 15$.
+  \begin{align*}
+    n &> 15 \\
+    n - 10 &> 5 \\
+    n^2 - 10n &> 5 \cdot 15 = 75 \tag{By fact} \\
+    n^3 - 10n^2 &> 75 \cdot 15 = 375 \\
+    n^3 - 10n^2 + 3 &> 378 \\
+    n^3 - 10n^2 + 3 &\geqslant 165
+    \qed
+  \end{align*}
+
+\item[(b)] We are going to disprove the statement: $\forall n \IN \N, n > 15 \AND n^3 - 10n^2 + 3 \geqslant 165$. In other words, we are going to prove the negation of this statement:
+
+$\exists n \IN \N, n \leqslant 15 \OR n^3 -10n^2 + 3 < 165$.
+
+\emph{Proof.} Let $n = 1$. Then $n = 1 \leqslant 15$. $\blacksquare$
+
+\newpage
+\end{enumerate}
+
+\section{Ceiling functions}
+\begin{enumerate}
+\item[(a)] Fact $1$: $\forall x \IN \R, \forall k \IN \Z, k \geqslant x \IMP k \geqslant \ceil x$.
+
+Fact $2$: $\forall x \IN \R, \forall k \IN \Z, \ceil{x + k} = \ceil{x} + k$. We will use fact 2 to prove the the following statement: $\forall n, m \IN \N, n < m \IMP \ceil{\frac{m - 1}{m} \cdot n}$.
+
+\emph{Proof.} Let $n, m \IN \N$. Assume $n < m$.
+\begin{align*}
+  \ceil{\frac{m - 1}{m} \cdot n} &= \ceil{\frac{nm}{m} - \frac{n}{m}} \\
+  &= \ceil{n - \frac{n}{m}} \\
+  &= \ceil{-\frac{n}{m} + n} \\
+  &= \ceil{-\frac{n}{m}} + n \tag{By fact 2 and $\N \subseteq \Z$} \\
+  &= 0 + n = n \tag{Since $0 \leqslant n < m$}
+  \blacksquare % TODO: gotta fix these QED's.
+\end{align*}
+
+\item[(b)] Prove that,
+
+$\forall n, m \IN \N, 50 \mid nextFifty(n) \AND 50 \mid m \IMP nextFifty(n) \leqslant m \AND nextFifty(n) \geqslant n$. For this proof, we will prove the contrapositive statement:
+
+$\forall n, m \IN \N, nextFifty(n) > m \OR nextFifty(n) < n \IMP 50 \nmid nextFifty(n) \OR 50 \nmid m$.
+
+\emph{Proof}.
+Let $n, m \IN \N$.
+
+\emph{Case 1:} Assume $nextFifty(n) > m$. From our assumptions, we know that
+\[
+50 \cdot \ceil{\frac{n}{50}} > m \IMP \ceil{\frac{n}{50}} > \frac{m}{50}
+\]
+It follows that $50 \nmid m$.
+
+\emph{Case 2:} Assume $nextFifty(n) < n$. From our assumptions,
+\[
+50 \cdot \ceil{\frac{n}{50}} < n \IMP \ceil{\frac{n}{50}} < \frac{n}{50}
+\]
+It follows that $50 \nmid nextFifty(n)$.
+
+TODO: This isn't complete.
+
+
+\end{enumerate}
+
+\newpage
+
+\section{Divisibility}
+
+\begin{enumerate}
+\item[(a)] Prove the statement:
+
+Prove the statement $\forall n \IN \N, n \leqslant 2300 \IMP \Big( 49 \mid n \IFF 50 \big( nextFifty(n) - n \big) = nextFifty(n) \Big)$.
+
+We'll split this proof into two parts. For part 1, we will prove:
+$\forall n \IN \N, n \leqslant 2300 \IMP \Big( 49 \mid n \IMP 50 \big( nextFifty(n) - n \big) = nextFifty(n) \Big)$.
+
+\emph{Proof.} Let $n \IN \N$. Assume that $n \leqslant 2300$ and assume that $\exists k \IN \Z, n = 49k$. Let $k$ be this number. We want to show that if the above is true, then $50 \big( nextFifty(n) - n \big) = nextFifty(n) \Big)$. Since $n$ ranges from $0 \leqslant n \leqslant 2300$, it follows that $k$ ranges from $0 \leqslant 49k \leqslant 2300 \IMP 0 \leqslant k \leqslant 46$. Then,
+\begin{align*}
+50 \cdot \Big( 50 \ceil{\frac{n}{50}} - n \Big) &= 50 \cdot \Big( 50 \ceil{\frac{49k}{50}} - 49k \Big) \\
+&= 50 \cdot \Big( 50 \ceil{\frac{50-1}{50} \cdot k} - 49k \Big) \\
+&= 50 \cdot \big( 50k - 49k \big) \tag{By 2b since k < 50} \\
+&= 50k
+\end{align*}
+
+On the other hand,
+\begin{align*}
+50 \cdot \ceil{\frac{n}{50}} &= 50 \cdot \ceil{\frac{49k}{50}} \\
+&= 50 \cdot \ceil{\frac{50-1}{50} \cdot k} \\
+&= 50k
+\end{align*}
+This completes the proof of part 1. We now need to prove,
+
+$\forall n \IN \N, n \leqslant 2300 \IMP \Big( 50 \big( nextFifty(n) - n \big) = nextFifty(n) \IMP 49 \mid n \Big)$.
+
+\emph{Proof.} Let $n \IN \N$. Assume $n \leqslant 2300$ and that $50 \cdot \Big( 50 \cdot \ceil{\frac{n}{50}} - n \Big) = 50 \ceil{\frac{n}{50}}$. We want to show that $\exists k_1 \IN \Z, n = 49 k_1$. Let $k_1 = \ceil{\frac{n}{50}}$. We have,
+\begin{align*}
+49k_1 &= 49 \ceil{\frac{n}{50}} \\
+&= \ceil{\frac{49n}{50}} \\
+&= \ceil{\frac{50 - 1}{50} \cdot n} = n \tag{By 2b} \\
+\qed
+\end{align*}
+
+\item[(b)] Disprove the statement:
+
+$\forall n \IN \N, \bigg(49 \mid n \IFF 50 \cdot (nextFifty(n) - n) = nextFifty(n)\bigg)$. Which is logically equivalent to:
+
+$\forall n \IN \N, \bigg(49 \mid n \IMP 50(nextFifty(n) - n) = nextFifty(n)\bigg) \AND \\ \bigg(50 (nextFifty(n) - n) = nextFifty(n) \IMP 49 \mid n\bigg)$.
+
+For this proof, we will prove that the negation is true. That is, we will prove the following statement:
+
+$\exists n \IN \N, \bigg(49 \mid n \AND 50 \cdot (nextFifty(n) - n) \neq nextFifty(n) \bigg) \OR \\ \bigg( 50 \cdot (nextFifty(n) - n) = nextFifty(n) \AND 49 \nmid n \bigg)$
+
+\emph{Proof.} Let $n = 2450$.
+
+Then $\exists k \IN \Z, n = 49k$. Let $k = 50$. Also,
+\begin{align*}
+50 \cdot \bigg( 50 \cdot \ceil{\frac{n}{50}} - n \bigg) &= 50 \cdot \bigg( 50 \cdot \ceil{\frac{2450}{50}} - 2450 \bigg) \\
+&= 50 \cdot \bigg( 50 \cdot \ceil{49} - 2450 \bigg) \\
+&= 50 \cdot \big( 50 \cdot 49 - 2450 \big) \\
+&= 50 \cdot \big( 2450 - 2450 \big) \\
+&= 50 \cdot 0 = 0
+\end{align*}
+
+On the other hand,
+\begin{align*}
+50 \cdot \ceil{\frac{n}{50}} &= 50 \cdot \ceil{\frac{2450}{50}} \\
+&= 50 \cdot \ceil{49} \\
+&= 50 \cdot 49 = 2450
+\end{align*}
+
+Since $50 \cdot \bigg( 50 \cdot \ceil{\frac{n}{50}} - n \bigg) \neq 50 \cdot \ceil{\frac{n}{50}}$, this completes the proof.
+$\blacksquare$
+
+\end{enumerate}
+
+\newpage
+
+\section{Functions}
+\begin{enumerate}
+\item[(a)] Let $Bounded(f)$: $\exists k \IN \R, \forall n \IN \N, f(n) < k$, where $f: \N \rightarrow \R^{\ge 0}$ define the statement ``\emph{f is bounded}''.
+
+% For later reference, let's also define the statement ``\emph{f is unbounded}'' by,
+
+% $\NOT Bounded(f): \forall k \IN \R, \exists n \IN \N, f(n) \geqslant k$, where $f: \N \rightarrow \R^{\ge 0}$.
+
+\item[(b)] Prove $\forall f_1, f_2: \N \rightarrow \R^{\ge 0}, Bounded(f_1) \AND Bounded(f_2) \IMP Bounded(f_1 + f_2)$.
+
+\emph{Proof.} Let $f_1(n), f_2(n): \N \rightarrow \R^{\ge 0}$. Assume $f_1(n)$ and $f_2(n)$ are bounded. That is, we assume
+
+$\exists k_1, k_2 \IN \R, \forall n \IN \N, f_1(n) < k_1 \AND f_2(n) < k_2$. Let $k_1$ and $k_2$ be these values. We want to show that
+
+$\exists k \IN \R, \forall n \IN \N, (f_1 + f_2)(n) < k$. Let $k = k_1 + k_2$. Then from our assumptions, we have,
+
+\begin{align*}
+f_1(n) < k_1 &\text{ and } f_2(n) < k_2 \\
+f_1(n) + f_2(n) &< k_1 + k_2 \tag{Adding the respective sides} \\
+(f_1 + f_2)(n) &< k_1 + k_2 \tag{By the definition of function addition} \\
+(f_1 + f_2)(n) &< k
+\qed
+\end{align*}
+Since this shows that $f_1 + f_2$ is also bounded, this completes the proof.
+
+\item[(c)] Prove or disprove the statement:
+
+$\forall f_1, f_2: \N \rightarrow \R^{\ge 0}, Bounded(f_1 + f_2) \IMP Bounded(f_1) \AND Bounded(f_2)$.
+
+\emph{Proof.} Let $f_1, f_2: \N \rightarrow \R^{\ge 0}$. Assume $f_1 + f_2$ is bounded. That is, we assume
+
+$\exists k \IN \R, \forall n \IN \N, (f_1 + f_2)(n) < k$. Let $k$ be this value. We want to show that
+
+$\exists k_1, k_2 \IN \R, \forall n \IN \N, f_1(n) < k_1 \AND f_2(n) < k_2$. Let $k_1 = k$ and $k_2 = k$. Then, from our assumptions, we have
+\begin{align*}
+(f_1 + f_2)(n) &< k \\
+f_1(n) + f_2(n) &< k \tag{By the definition of function addition} \\
+f_1(n) < k &\text{ and } f_2(n) < k \tag{Since $f_1(n), f_2(n) \IN \R^{\ge 0}$} \\
+f_1(n) < k_1 &\text{ and } f_2(n) < k_2
+\qed
+\end{align*}
+Since this shows that $f_1$ and $f_2$ are bounded, this completes the proof.
+
+This is now a biconditional statement.
+
+\end{enumerate}
+
+
+\end{document}
